@@ -8,7 +8,7 @@ services:
   sonarqube:
     # ---- Build instructions ----
     container_name: sonarqube
-    image: sonarqube:community
+    image: sonarqube:lts-community
     shm_size: 256m
 
     # ---- Container information ----
