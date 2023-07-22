@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+
+  # ============================
+  # |    SonarQube             |
+  # ============================
+  sonarqube:
+    # ---- Build instructions ----
+    container_name: sonarqube
+    image: sonarqube:community
+    shm_size: 256m
+
+    # ---- Container information ----
+    tty: true
+    restart: unless-stopped
+    depends_on:
+      - postgresql-sonarqube
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=webgateway-traefik
+      - traefik.http.routers.sonarqube-router.rule=Host(`sonarqube.alexis-vannot.dev`)
+      - traefik.http.routers.sonarqube-router.entrypoints=websecure
+      - traefik.http.routers.sonarqube-router.tls=true
+      - traefik.http.routers.sonarqube-router.tls.certresolver=letsencrypt
+      - traefik.http.routers.sonarqube-router.service=sonarqube-service
+      - traefik.http.services.sonarqube-service.loadbalancer.server.port=8069
+    volumes:
+      # Container configuration
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      # SonarQube data
+      - ./sonarqube_data:/opt/sonarqube
+    networks:
+      - webgateway-sonarqube
+      - webgateway-traefik
+
+  # ============================
+  # |    PostgreSQL            |
+  # ============================
+  postgresql-sonarqube:
+    # ---- Build instructions ----
+    container_name: postgresql-sonarqube
+    image: postgres:14
+    shm_size: 256m
+
+    # ---- Container information ----
+    tty: true
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgresql_root_password
+    volumes:
+      # Container configuration
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      # PostgreSQL data
+      - ./postgresql_data:/var/lib/postgresql/data
+    networks:
+      - webgateway-sonarqube
+    secrets:
+      - postgresql_root_password
+
+# ========================
+# |  Networks            |
+# ========================
+networks:
+  webgateway-sonarqube:
+    name: webgateway-sonarqube
+
+  webgateway-traefik:
+    external: true
+
+# ========================
+# |  Secrets             |
+# ========================
+secrets:
+  postgresql_root_password:
+    file: ./.secrets/postgresql_root_password.txt
