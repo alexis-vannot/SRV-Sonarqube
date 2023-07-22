@@ -24,7 +24,7 @@ services:
       - traefik.http.routers.sonarqube-router.tls=true
       - traefik.http.routers.sonarqube-router.tls.certresolver=letsencrypt
       - traefik.http.routers.sonarqube-router.service=sonarqube-service
-      - traefik.http.services.sonarqube-service.loadbalancer.server.port=8069
+      - traefik.http.services.sonarqube-service.loadbalancer.server.port=9000
     volumes:
       # Container configuration
       - /etc/timezone:/etc/timezone:ro
