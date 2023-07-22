@@ -8,4 +8,6 @@
 # Bind volumes
 postgresql_data/
 sonarqube_data/
+sonarqube_extensions/
+sonarqube_logs/
 .secrets/
