@@ -16,10 +16,12 @@ services:
     restart: unless-stopped
     depends_on:
       - postgresql-sonarqube
-    environment:
-      # - SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
-      - SONAR_JDBC_USERNAME=/run/secrets/postgresql_user
-      - SONAR_JDBC_PASSWORD/run/secrets/postgresql_user_password
+    env_file:
+      # -------------------------------------------------------------------
+      # Environment variables (SONAR_JDBC_URL, SONAR_JDBC_USERNAME,       |
+      # SONAR_JDBC_PASSWORD) are managed in ./.secrets/vaultwarden.env.   |
+      # -------------------------------------------------------------------
+      - ./.secrets/sonarqube.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=webgateway-traefik
@@ -40,9 +42,6 @@ services:
     networks:
       - webgateway-sonarqube
       - webgateway-traefik
-    secrets:
-      - postgresql_user
-      - postgresql_user_password
 
   # ============================
   # |    PostgreSQL            |
@@ -85,7 +84,3 @@ networks:
 secrets:
   postgresql_root_password:
     file: ./.secrets/postgresql_root_password.txt
-  postgresql_user:
-    file: ./.secrets/postgresql_user.txt
-  postgresql_user_password:
-    file: ./.secrets/postgresql_user_password.txt
