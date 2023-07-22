@@ -30,7 +30,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       # SonarQube data
-      - ./sonarqube_data:/opt/sonarqube
+      # - ./sonarqube_data:/opt/sonarqube
     networks:
       - webgateway-sonarqube
       - webgateway-traefik
