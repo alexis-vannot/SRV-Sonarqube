@@ -15,17 +15,22 @@ docker compose down --remove-orphans
 ## Rentrer dans le conteneur
 
 ```shell
-docker exec -it sonarqube bash
+docker exec -it sonarqube sh
 docker exec -it postgresql-sonarqube bash
 ```
 
 ## Informations
 
-### sonarqube
+### Sonarqube
 
-- Fichier de configuration `/odoo.conf` doit être à la racine du dossier (attention il n'est pas dans le repo git car il est dans le .gitignore). Le fichier est lu automatiquement par le service dans le conteneur.
+- Aucun fichier de configuration est nécessaire, Sonarqube permet de configurer les principales fonctionnalités depuis l'interface web.
 
-- Les données persistantes sont dans le dossier `./odoo_data` sur l'hôte.
+- Certaines variables d'environement utilisées sont stockées dans le fichier `./.secrets/sonarqube.env` sur l'hôte.
+
+- Les données persistantes sont dans les dossiers
+  - `./sonarqube_data`
+  - `./sonarqube_extensions`
+  - `./sonarqube_logs`
 
 ### Postgresql
 

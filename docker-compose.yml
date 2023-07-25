@@ -19,7 +19,7 @@ services:
     env_file:
       # -------------------------------------------------------------------
       # Environment variables (SONAR_JDBC_URL, SONAR_JDBC_USERNAME,       |
-      # SONAR_JDBC_PASSWORD) are managed in ./.secrets/vaultwarden.env.   |
+      # SONAR_JDBC_PASSWORD) are managed in ./.secrets/sonarqube.env.   |
       # -------------------------------------------------------------------
       - ./.secrets/sonarqube.env
     labels:
